@@ -1,7 +1,7 @@
 package cs3500.solored.model.hw02;
 
 public enum Color {
-  RED, ORANGE, BLUE, INDIGO, VIOLET;
+  VIOLET, INDIGO, BLUE, ORANGE, RED;
 
   @Override
   public String toString() {
