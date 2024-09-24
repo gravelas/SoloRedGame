@@ -14,27 +14,32 @@ public class RedCard extends SoloCard{
     this.color = Color.RED;
   }
 
+  /**
+   * Loops through the Palettes provided and finds the one with the largest indexed card.
+   * @param palettes
+   * @return
+   */
   @Override
-  public List<Boolean> canvasRule(List<List<SoloCard>> palettes) {
-    int largestPaletteIndex = 0;
-    int largestPaletteNumber = -1;
-    for (int paletteIndex = 1; paletteIndex < palettes.size(); paletteIndex++) {
-        int largestCardNum = palettes.get(paletteIndex).get(0).number();
-        for (int cardIndex = 1; cardIndex < palettes.get(paletteIndex).size(); cardIndex++) {
-          if (palettes.get(paletteIndex).get(cardIndex).number() > largestCardNum) {
-            largestCardNum = palettes.get(paletteIndex).get(cardIndex).number();
+  public List<SoloCard> canvasRule(List<List<SoloCard>> palettes) {
+    int largestNumber = 0;
+    SoloCard bestCard = null;
+    List<SoloCard> bestPalette = null;
+    for (List<SoloCard> palette : palettes) {
+      for (SoloCard card : palette) {
+        if (card.number() > largestNumber) {
+          largestNumber = card.number();
+          bestCard = card;
+          bestPalette = palette;
+        } else if (card.number() == largestNumber) {
+          if (card.color().ordinal() > bestCard.color().ordinal()) {
+            largestNumber = card.number();
+            bestCard = card;
+            bestPalette = palette;
           }
         }
-        if (largestCardNum > largestPaletteNumber) {
-          largestPaletteIndex = paletteIndex;
-          largestPaletteNumber = largestCardNum;
-        }
       }
-    List<Boolean> winningPaletteList = new ArrayList<>();
-    for (int paletteIndex = 0; paletteIndex < palettes.size(); paletteIndex++) {
-      winningPaletteList.add(paletteIndex == largestPaletteIndex);
     }
-    return winningPaletteList;
+    return bestPalette;
   }
 
 }

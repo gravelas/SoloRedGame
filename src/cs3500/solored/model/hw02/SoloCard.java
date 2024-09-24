@@ -1,6 +1,8 @@
 package cs3500.solored.model.hw02;
 
 
+import java.util.List;
+
 public abstract class SoloCard implements Card {
 
   protected Color color;
@@ -25,6 +27,8 @@ public abstract class SoloCard implements Card {
   public Color color() {
     return color;
   }
+
+  abstract public List<SoloCard> canvasRule(List<List<SoloCard>> palettes);
 
   @Override
   public String toString() {
