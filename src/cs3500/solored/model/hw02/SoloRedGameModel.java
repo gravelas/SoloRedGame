@@ -50,12 +50,17 @@ public class SoloRedGameModel implements RedGameModel<SoloCard>{
   public void drawForHand() {
     while (hand.size() < handSize) {
       if (numOfCardsInDeck() > 0) {
-        hand.add(deck.get(0));
-        deck.remove(0);
+        hand.add(dealFromDeck());
       } else {
         break;
       }
     }
+  }
+
+  private SoloCard dealFromDeck() {
+    SoloCard dealt = deck.get(0);
+    deck.remove(0);
+    return dealt;
   }
 
   @Override
@@ -66,6 +71,7 @@ public class SoloRedGameModel implements RedGameModel<SoloCard>{
     this.deck = deck;
     for (int i = 0; i < numPalettes; i++) {
       palettes.add(new ArrayList<>());
+      palettes.get(i).add(dealFromDeck());
     }
     this.handSize = handSize;
   }
