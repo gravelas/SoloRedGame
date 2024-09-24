@@ -2,21 +2,36 @@ package cs3500.solored.model.hw02;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public class RedGame implements RedGameModel<SoloCard>{
+public class SoloRedGameModel implements RedGameModel<SoloCard>{
 
   List<SoloCard> deck;
   List<List<SoloCard>> palettes;
   List<SoloCard> hand;
   SoloCard canvas;
   int handSize;
+  Random rand;
 
-  public RedGame() {
+  public SoloRedGameModel() {
     deck = new ArrayList<>();
     palettes = new ArrayList<>();
     hand = new ArrayList<>();
     canvas = null;
     handSize = 0;
+    rand = new Random();
+  }
+
+  public SoloRedGameModel(Random random) {
+    deck = new ArrayList<>();
+    palettes = new ArrayList<>();
+    hand = new ArrayList<>();
+    canvas = null;
+    handSize = 0;
+    if (random == null) {
+      throw new IllegalArgumentException("random cannot be null.");
+    }
+    rand = random;
   }
 
   @Override
@@ -58,7 +73,7 @@ public class RedGame implements RedGameModel<SoloCard>{
   private List<SoloCard> shuffle(List<SoloCard> deck) {
     List<SoloCard> shuffled = new ArrayList<>();
     while (!deck.isEmpty()) {
-      int randomIndex = (int) (Math.random() * (deck.size()-1));
+      int randomIndex = rand.nextInt(deck.size());
       shuffled.add(CardBuilder.makeCard(deck.get(randomIndex).toString()));
       deck.remove(randomIndex);
     }
