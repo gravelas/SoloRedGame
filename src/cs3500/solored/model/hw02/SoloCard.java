@@ -1,7 +1,9 @@
 package cs3500.solored.model.hw02;
 
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class SoloCard implements Card {
 
@@ -33,5 +35,30 @@ public abstract class SoloCard implements Card {
   @Override
   public String toString() {
     return color.toString() + num;
+  }
+
+  protected List<SoloCard> getSoloCards(List<List<SoloCard>> palettes, Map<List<SoloCard>, Integer> paletteBestNumberCount) {
+    List<SoloCard> bestPalette = List.of();
+    int bestPaletteNumberCount = 0;
+    boolean biggestIsTie = false;
+    for (List<SoloCard> palette : palettes) {
+      if (paletteBestNumberCount.get(palette) > paletteBestNumberCount.get(bestPalette)) {
+        bestPalette = palette;
+        bestPaletteNumberCount = paletteBestNumberCount.get(palette);
+        biggestIsTie = false;
+      } else if (paletteBestNumberCount.get(palette) == paletteBestNumberCount.get(bestPalette)) {
+        biggestIsTie = true;
+      }
+    }
+    List<List<SoloCard>> tiedPalette = new ArrayList<>();
+    if (biggestIsTie) {
+      for (List<SoloCard> palette : palettes) {
+        if (paletteBestNumberCount.get(palette) == bestPaletteNumberCount) {
+          tiedPalette.add(palette);
+        }
+      }
+      return CardBuilder.makeCard("R1").canvasRule(tiedPalette);
+    }
+    return bestPalette;
   }
 }

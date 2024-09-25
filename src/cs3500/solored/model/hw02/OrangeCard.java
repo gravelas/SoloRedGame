@@ -18,7 +18,6 @@ public class OrangeCard extends SoloCard{
 
   @Override
   public List<SoloCard> canvasRule(List<List<SoloCard>> palettes) {
-    List<List<SoloCard>> listOfTies = new ArrayList<List<SoloCard>>();
     Map<List<SoloCard>, Integer> paletteBestNumberCount = new HashMap<>();
     int bestCardNumberCount = 0;
     for (List<SoloCard> palette : palettes) {
@@ -31,28 +30,7 @@ public class OrangeCard extends SoloCard{
       }
       paletteBestNumberCount.put(palette, bestCardNumberCount);
     }
-    List<SoloCard> bestPalette = List.of();
-    int bestPaletteNumberCount = 0;
-    boolean biggestIsTie = false;
-    for (List<SoloCard> palette : palettes) {
-      if (paletteBestNumberCount.get(palette) > paletteBestNumberCount.get(bestPalette)) {
-        bestPalette = palette;
-        bestPaletteNumberCount = paletteBestNumberCount.get(palette);
-        biggestIsTie = false;
-      } else if (paletteBestNumberCount.get(palette) == paletteBestNumberCount.get(bestPalette)) {
-        biggestIsTie = true;
-      }
-    }
-    List<List<SoloCard>> tiedPalette = new ArrayList<>();
-    if (biggestIsTie) {
-      for (List<SoloCard> palette : palettes) {
-        if (paletteBestNumberCount.get(palette) == bestPaletteNumberCount) {
-          tiedPalette.add(palette);
-        }
-      }
-      return CardBuilder.makeCard("R1").canvasRule(tiedPalette);
-    }
-    return bestPalette;
+    return getSoloCards(palettes, paletteBestNumberCount);
   }
 }
 
