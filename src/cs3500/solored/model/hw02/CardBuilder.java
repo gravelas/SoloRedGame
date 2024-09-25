@@ -11,8 +11,10 @@ public class CardBuilder {
       return (SoloCard) new BlueCard((Integer.parseInt(cardString.substring(1))));
     } else if (cardString.charAt(0) == 'I') {
       return (SoloCard) new IndigoCard((Integer.parseInt(cardString.substring(1))));
-    } else {
+    } else if (cardString.charAt(0) == 'V') {
       return (SoloCard) new VioletCard((Integer.parseInt(cardString.substring(1))));
+    } else {
+      return null;
     }
   }
 }
