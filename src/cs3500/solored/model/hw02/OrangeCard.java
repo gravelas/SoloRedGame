@@ -1,6 +1,5 @@
 package cs3500.solored.model.hw02;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +29,7 @@ public class OrangeCard extends SoloCard{
       }
       paletteBestNumberCount.put(palette, bestCardNumberCount);
     }
-    return getSoloCards(palettes, paletteBestNumberCount);
+    return biggestOrRedCardWinner(palettes, paletteBestNumberCount);
   }
 }
 

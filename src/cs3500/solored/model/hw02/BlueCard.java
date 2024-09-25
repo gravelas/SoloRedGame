@@ -28,6 +28,6 @@ public class BlueCard extends SoloCard{
       }
       paletteBestColorCount.put(palette, bestCardColorCount);
     }
-    return getSoloCards(palettes, paletteBestColorCount);
+    return biggestOrRedCardWinner(palettes, paletteBestColorCount);
   }
 }
