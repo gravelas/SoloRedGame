@@ -2,7 +2,7 @@ package cs3500.solored.model.hw02;
 
 public class CardBuilder {
 
-  static SoloCard makeCard(String cardString) {
+  public static SoloCard makeCard(String cardString) {
     if (cardString.charAt(0) == 'R') {
       return (SoloCard) new RedCard((Integer.parseInt(cardString.substring(1))));
     } else if (cardString.charAt(0) == 'O') {

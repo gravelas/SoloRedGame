@@ -16,8 +16,8 @@ public class RedCard extends SoloCard{
 
   /**
    * Loops through the Palettes provided and finds the one with the largest indexed card.
-   * @param palettes
-   * @return
+   * @param palettes the palettes it searches through
+   * @return the palette with the largest indexed card. ties broken by color in ROBIV order
    */
   @Override
   public List<SoloCard> canvasRule(List<List<SoloCard>> palettes) {

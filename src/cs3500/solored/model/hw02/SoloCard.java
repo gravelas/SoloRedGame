@@ -38,10 +38,11 @@ public abstract class SoloCard implements Card {
   }
 
   protected List<SoloCard> biggestOrRedCardWinner(List<List<SoloCard>> palettes, Map<List<SoloCard>, Integer> paletteBestNumberCount) {
-    List<SoloCard> bestPalette = List.of();
-    int bestPaletteNumberCount = 0;
+    List<SoloCard> bestPalette = palettes.get(0);
+    int bestPaletteNumberCount = paletteBestNumberCount.get(palettes.get(0));
     boolean biggestIsTie = false;
-    for (List<SoloCard> palette : palettes) {
+    for (int paletteNumber = 1; paletteNumber < palettes.size(); paletteNumber++) {
+      List<SoloCard> palette = palettes.get(paletteNumber);
       if (paletteBestNumberCount.get(palette) > paletteBestNumberCount.get(bestPalette)) {
         bestPalette = palette;
         bestPaletteNumberCount = paletteBestNumberCount.get(palette);
