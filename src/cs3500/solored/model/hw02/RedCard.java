@@ -1,9 +1,11 @@
 package cs3500.solored.model.hw02;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class RedCard extends SoloCard{
+/**
+ * SoloCard with the color Red.
+ */
+public class RedCard extends SoloCard {
 
   /**
    * Creates a RedCard. Number must be between 1-7 (inclusive).
@@ -21,6 +23,12 @@ public class RedCard extends SoloCard{
    */
   @Override
   public List<SoloCard> canvasRule(List<List<SoloCard>> palettes) {
+    if (palettes == null) {
+      throw new IllegalArgumentException("Palette must not be null");
+    }
+    if (palettes.isEmpty()) {
+      throw new IllegalArgumentException("Palette must not be empty.");
+    }
     int largestNumber = 0;
     SoloCard bestCard = null;
     List<SoloCard> bestPalette = null;

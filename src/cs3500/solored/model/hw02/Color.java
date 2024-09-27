@@ -1,5 +1,8 @@
 package cs3500.solored.model.hw02;
 
+/**
+ * Enum of Different Colors possible by SoloCards.
+ */
 public enum Color {
   VIOLET, INDIGO, BLUE, ORANGE, RED;
 

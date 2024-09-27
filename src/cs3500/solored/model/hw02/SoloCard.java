@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * An implementation of Card that has a number and a color.
+ */
 public abstract class SoloCard implements Card {
 
   protected Color color;
@@ -30,14 +33,15 @@ public abstract class SoloCard implements Card {
     return color;
   }
 
-  abstract public List<SoloCard> canvasRule(List<List<SoloCard>> palettes);
+  public abstract List<SoloCard> canvasRule(List<List<SoloCard>> palettes);
 
   @Override
   public String toString() {
     return color.toString() + num;
   }
 
-  protected List<SoloCard> biggestOrRedCardWinner(List<List<SoloCard>> palettes, Map<List<SoloCard>, Integer> paletteBestNumberCount) {
+  protected List<SoloCard> biggestOrRedCardWinner
+          (List<List<SoloCard>> palettes, Map<List<SoloCard>, Integer> paletteBestNumberCount) {
     List<SoloCard> bestPalette = palettes.get(0);
     int bestPaletteNumberCount = paletteBestNumberCount.get(palettes.get(0));
     boolean biggestIsTie = false;
@@ -61,5 +65,15 @@ public abstract class SoloCard implements Card {
       return CardBuilder.makeCard("R1").canvasRule(tiedPalette);
     }
     return bestPalette;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    return (this.color == ((SoloCard) o).color() && (this.num == ((SoloCard) o).number()));
+  }
+
+  @Override
+  public int hashCode() {
+    return color.hashCode() + num;
   }
 }
