@@ -40,8 +40,8 @@ public abstract class SoloCard implements Card {
     return color.toString() + num;
   }
 
-  protected List<SoloCard> biggestOrRedCardWinner
-          (List<List<SoloCard>> palettes, Map<List<SoloCard>, Integer> paletteBestNumberCount) {
+  protected List<SoloCard> biggestOrRedCardWinner(
+      List<List<SoloCard>> palettes, Map<List<SoloCard>, Integer> paletteBestNumberCount) {
     List<SoloCard> bestPalette = palettes.get(0);
     int bestPaletteNumberCount = paletteBestNumberCount.get(palettes.get(0));
     boolean biggestIsTie = false;

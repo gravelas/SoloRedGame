@@ -14,6 +14,10 @@ public class SoloRedGameTextView implements RedGameView {
     this.model = model;
   }
 
+  /**
+   * Returns a formatted string of the board view.
+   * @return a string formatted to show the board state.
+   */
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("Canvas: ").append(model.getCanvas().toString().charAt(0)).append("\n");

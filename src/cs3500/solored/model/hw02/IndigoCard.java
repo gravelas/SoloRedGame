@@ -42,7 +42,7 @@ public class IndigoCard extends SoloCard {
       int currentRun = 1;
       for (SoloCard card : setPalette) {
         if (setPalette.stream().anyMatch(
-                (nextCard) -> (nextCard.number() == 1 + card.number()))) {
+            (nextCard) -> (nextCard.number() == 1 + card.number()))) {
           currentRun++;
           if (currentRun > biggestRun) {
             biggestRun = currentRun;

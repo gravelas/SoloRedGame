@@ -37,7 +37,7 @@ public class OrangeCard extends SoloCard {
       for (int cardNumber = 1; cardNumber <= 7; cardNumber++) {
         int finalCardNumber = cardNumber;
         int cardNumberCount = (int) palette.stream().filter(
-                (card) -> (card.number() == finalCardNumber)).count();
+            (card) -> (card.number() == finalCardNumber)).count();
         if (cardNumberCount > bestCardNumberCount) {
           bestCardNumberCount = cardNumberCount;
         }

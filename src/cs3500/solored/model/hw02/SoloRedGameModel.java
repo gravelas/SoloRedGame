@@ -19,6 +19,7 @@ public class SoloRedGameModel implements RedGameModel<SoloCard> {
   boolean gameOver;
   boolean gameStart;
   boolean drawCanvas;
+  boolean lost;
 
   /**
    * initializes a SoloRedGameModel with values that allow startGame to be called.
@@ -33,6 +34,7 @@ public class SoloRedGameModel implements RedGameModel<SoloCard> {
     gameOver = false;
     drawCanvas = false;
     gameStart = false;
+    lost = false;
   }
 
   /**
@@ -53,18 +55,24 @@ public class SoloRedGameModel implements RedGameModel<SoloCard> {
     gameOver = false;
     drawCanvas = false;
     gameStart = false;
+    lost = false;
   }
 
   @Override
   public void playToPalette(int paletteIdx, int cardIdxInHand) {
-    if (gameOver || !gameStart) {
-      throw new IllegalStateException("Game is over/hasn't started.");
+    if (gameOver) {
+      throw new IllegalStateException("Game is over");
+    }
+    if (!gameStart) {
+      throw new IllegalStateException("Game has not started");
     }
     if (paletteIdx < 0 || paletteIdx >= palettes.size()) {
-      throw new IllegalArgumentException("paletteIdx must be between 0 and " + (palettes.size() - 1));
+      throw new IllegalArgumentException(
+              "paletteIdx must be between 0 and " + (palettes.size() - 1));
     }
     if (cardIdxInHand < 0 || cardIdxInHand >= hand.size()) {
-      throw new IllegalArgumentException("cardIdxInHand must be between 0 and " + (hand.size() - 1));
+      throw new IllegalArgumentException(
+              "cardIdxInHand must be between 0 and " + (hand.size() - 1));
     }
     if (winningPaletteIndex() == paletteIdx) {
       throw new IllegalStateException("palette played to must not be winning.");
@@ -72,6 +80,10 @@ public class SoloRedGameModel implements RedGameModel<SoloCard> {
     palettes.get(paletteIdx).add(hand.get(cardIdxInHand));
     hand.remove(cardIdxInHand);
     if (paletteIdx != winningPaletteIndex()) {
+      lost = true;
+      gameOver = true;
+    }
+    if (hand.isEmpty() && deck.isEmpty()) {
       gameOver = true;
     }
   }
@@ -81,8 +93,9 @@ public class SoloRedGameModel implements RedGameModel<SoloCard> {
     if (gameOver || !gameStart) {
       throw new IllegalStateException("Game is over/hasn't started.");
     }
-    if (cardIdxInHand < 0 || cardIdxInHand >= deck.size()) {
-      throw new IllegalArgumentException("cardIdxInHand must be between 0 and " + (deck.size() - 1));
+    if (cardIdxInHand < 0 || cardIdxInHand >= hand.size()) {
+      throw new IllegalArgumentException(
+              "cardIdxInHand must be between 0 and " + (hand.size() - 1));
     }
     if (drawCanvas) {
       throw new IllegalStateException("method already called once in a turn");
@@ -128,7 +141,8 @@ public class SoloRedGameModel implements RedGameModel<SoloCard> {
       throw new IllegalArgumentException("Invalid hand size/number of palettes");
     }
     if (deck.size() < (numPalettes + handSize)) {
-      throw new IllegalArgumentException("deck size is not big enough to fill required card states");
+      throw new IllegalArgumentException(
+              "deck size is not big enough to fill required card states");
     }
     if (deck.contains(null)) {
       throw new IllegalArgumentException("deck contains null element");
@@ -137,7 +151,7 @@ public class SoloRedGameModel implements RedGameModel<SoloCard> {
       throw new IllegalArgumentException("duplicate cards are not allowed");
     }
     gameStart = true;
-    List<SoloCard> deckCopy = new ArrayList<>(deck);
+    List<SoloCard> deckCopy = new ArrayList<>();
     for (int deckIndex = 0; deckIndex < deck.size(); deckIndex++) {
       deckCopy.add(CardBuilder.makeCard(deck.get(deckIndex).toString()));
     }
@@ -193,16 +207,15 @@ public class SoloRedGameModel implements RedGameModel<SoloCard> {
     if (!gameStart) {
       throw new IllegalStateException("Game has not started.");
     }
-    return gameOver || isGameWon();
+    return gameOver;
   }
 
   @Override
   public boolean isGameWon() {
-    if (!gameStart || gameOver) {
+    if (!gameStart || !gameOver) {
       throw new IllegalStateException("Game has not started/is over.");
     }
-    gameOver = true;
-    return hand.isEmpty() && deck.isEmpty();
+    return !lost && (hand.isEmpty() && deck.isEmpty());
   }
 
   @Override
@@ -223,7 +236,8 @@ public class SoloRedGameModel implements RedGameModel<SoloCard> {
       throw new IllegalStateException("Game has not started.");
     }
     if (paletteNum < 0 || paletteNum > palettes.size() - 1) {
-      throw new IllegalArgumentException("paletteNum must be between 0 and " + (palettes.size() - 1));
+      throw new IllegalArgumentException(
+              "paletteNum must be between 0 and " + (palettes.size() - 1));
     }
     List<SoloCard> returnList = new ArrayList<>();
     for (SoloCard card : palettes.get(paletteNum)) {

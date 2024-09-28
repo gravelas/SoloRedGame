@@ -77,12 +77,13 @@ public class TestCanvasRules {
 
   @Test
   public void testRedRuleThrowsWithNullPalettes() {
-    Assert.assertThrows(NullPointerException.class, () -> redCard.canvasRule(null));
+    Assert.assertThrows(IllegalArgumentException.class, () -> redCard.canvasRule(null));
   }
 
   @Test
   public void testRedRuleThrowsWithEmptyPalettes() {
-    Assert.assertThrows(IllegalArgumentException.class, () -> redCard.canvasRule(new ArrayList<>()));
+    Assert.assertThrows(
+            IllegalArgumentException.class, () -> redCard.canvasRule(new ArrayList<>()));
   }
 
   @Test
@@ -97,27 +98,29 @@ public class TestCanvasRules {
 
   @Test
   public void testOrangeRuleThrowsWithEmptyPalettes() {
-    Assert.assertThrows(IllegalArgumentException.class, () -> orangeCard.canvasRule(new ArrayList<>()));
+    Assert.assertThrows(
+            IllegalArgumentException.class, () -> orangeCard.canvasRule(new ArrayList<>()));
   }
 
   @Test
   public void testOrangeRuleThrowsWithNullPalettes() {
-    Assert.assertThrows(NullPointerException.class, () -> orangeCard.canvasRule(null));
+    Assert.assertThrows(IllegalArgumentException.class, () -> orangeCard.canvasRule(null));
   }
 
   @Test
   public void testBlueRuleSelectsCorrectPaletteWithNoTie() {
-    Assert.assertEquals(blueCard.canvasRule(palettes), palette2);
+    Assert.assertEquals(blueCard.canvasRule(palettes), palette3);
   }
 
   @Test
   public void testBlueRuleThrowsWithEmptyPalettes() {
-    Assert.assertThrows(IllegalArgumentException.class, () -> blueCard.canvasRule(new ArrayList<>()));
+    Assert.assertThrows(
+            IllegalArgumentException.class, () -> blueCard.canvasRule(new ArrayList<>()));
   }
 
   @Test
   public void testBlueRuleThrowsWithNullPalettes() {
-    Assert.assertThrows(NullPointerException.class, () -> blueCard.canvasRule(null));
+    Assert.assertThrows(IllegalArgumentException.class, () -> blueCard.canvasRule(null));
   }
 
   @Test
@@ -127,12 +130,13 @@ public class TestCanvasRules {
 
   @Test
   public void testIndigoRuleThrowsWithEmptyPalettes() {
-    Assert.assertThrows(IllegalArgumentException.class, () -> indigoCard.canvasRule(new ArrayList<>()));
+    Assert.assertThrows(
+            IllegalArgumentException.class, () -> indigoCard.canvasRule(new ArrayList<>()));
   }
 
   @Test
   public void testIndigoRuleThrowsWithNullPalettes() {
-    Assert.assertThrows(NullPointerException.class, () -> indigoCard.canvasRule(null));
+    Assert.assertThrows(IllegalArgumentException.class, () -> indigoCard.canvasRule(null));
   }
 
   @Test
@@ -142,12 +146,36 @@ public class TestCanvasRules {
 
   @Test
   public void testVioletRuleThrowsWithEmptyPalettes() {
-    Assert.assertThrows(IllegalArgumentException.class, () -> violetCard.canvasRule(new ArrayList<>()));
+    Assert.assertThrows(
+            IllegalArgumentException.class, () -> violetCard.canvasRule(new ArrayList<>()));
   }
 
   @Test
   public void testVioletRuleThrowsWithNullPalettes() {
-    Assert.assertThrows(NullPointerException.class, () -> violetCard.canvasRule(null));
+    Assert.assertThrows(IllegalArgumentException.class, () -> violetCard.canvasRule(null));
+  }
+
+  @Test
+  public void testBlueRuleWithCertainCards() {
+    List<SoloCard> palette1 = new ArrayList<>();
+    List<SoloCard> palette2 = new ArrayList<>();
+    List<SoloCard> palette3 = new ArrayList<>();
+    List<SoloCard> palette4 = new ArrayList<>();
+
+    palette1.add(CardBuilder.makeCard("V1"));
+    palette1.add(CardBuilder.makeCard("V5"));
+    palette2.add(CardBuilder.makeCard("I2"));
+    palette3.add(CardBuilder.makeCard("R3"));
+    palette4.add(CardBuilder.makeCard("O3"));
+    palette4.add(CardBuilder.makeCard("I5"));
+
+    List<List<SoloCard>> palettes = new ArrayList<>();
+    palettes.add(palette1);
+    palettes.add(palette2);
+    palettes.add(palette3);
+    palettes.add(palette4);
+
+    Assert.assertEquals(blueCard.canvasRule(palettes), palette4);
   }
 
 }

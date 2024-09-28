@@ -1,8 +1,10 @@
 package cs3500.solored.model.hw02;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * SoloCard with the Color Blue.
@@ -34,13 +36,11 @@ public class BlueCard extends SoloCard {
     Map<List<SoloCard>, Integer> paletteBestColorCount = new HashMap<>();
     for (List<SoloCard> palette : palettes) {
       int bestCardColorCount = 0;
-      for (Color color : Color.values()) {
-        int cardColorCount = (int) palette.stream().filter
-                ((card) -> (card.color() == color)).count();
-        if (cardColorCount > bestCardColorCount) {
-          bestCardColorCount = cardColorCount;
-        }
+      Set<Color> colorCount = new HashSet<>();
+      for (SoloCard card : palette) {
+        colorCount.add(card.color());
       }
+      bestCardColorCount = colorCount.size();
       paletteBestColorCount.put(palette, bestCardColorCount);
     }
     return biggestOrRedCardWinner(palettes, paletteBestColorCount);
