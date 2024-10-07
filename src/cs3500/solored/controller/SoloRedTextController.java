@@ -33,6 +33,9 @@ public class SoloRedTextController implements RedGameController {
 
   @Override
   public <C extends Card> void playGame(RedGameModel<C> model, List<C> deck, boolean shuffle, int numPalettes, int handSize) throws IllegalArgumentException, IllegalStateException {
+    if (model == null) {
+      throw new IllegalArgumentException("RedGameModel is null");
+    }
     model.startGame(deck, shuffle, numPalettes, handSize);
     while (!model.isGameOver()) {
         textView = new SoloRedGameTextView(model, appendable);
