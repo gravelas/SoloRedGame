@@ -1,4 +1,4 @@
-package cs3500.controller;
+package cs3500.solored.controller;
 
 import java.io.IOException;
 import java.nio.CharBuffer;
