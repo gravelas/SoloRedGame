@@ -1,5 +1,6 @@
 package cs3500.solored.view.hw02;
 
+import java.io.IOException;
 import java.util.Iterator;
 
 import cs3500.solored.model.hw02.RedGameModel;
@@ -9,9 +10,15 @@ import cs3500.solored.model.hw02.RedGameModel;
  */
 public class SoloRedGameTextView implements RedGameView {
   private final RedGameModel<?> model;
+  private Appendable append;
 
   public SoloRedGameTextView(RedGameModel<?> model) {
     this.model = model;
+  }
+
+  public SoloRedGameTextView(RedGameModel<?> model, Appendable append) {
+    this.model = model;
+    this.append = append;
   }
 
   /**
@@ -44,5 +51,10 @@ public class SoloRedGameTextView implements RedGameView {
       }
     }
     return sb.toString();
+  }
+
+  @Override
+  public void render() throws IOException {
+    append.append(toString());
   }
 }
