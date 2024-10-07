@@ -6,8 +6,6 @@ import java.util.Deque;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import cs3500.solored.model.hw02.Card;
 import cs3500.solored.model.hw02.RedGameModel;
@@ -86,11 +84,10 @@ public class SoloRedTextController implements RedGameController {
   }
 
   private <C extends Card> void parseCommand(RedGameModel<C> model, String input) {
-    Deque<String> commandAndArgs = new ArrayDeque<>(Stream.of(read().split(" ")).filter((s) -> !s.contains("-")).collect(Collectors.toCollection(ArrayDeque::new)));
-
+    Deque<String> commandAndArgs = new ArrayDeque<>(List.of(input.split(" ")));
     while (true) {
       if (commandAndArgs.isEmpty()) {
-        commandAndArgs.addAll(Stream.of(read().split(" ")).filter((s) -> !s.contains("-")).collect(Collectors.toCollection(ArrayDeque::new)));
+        commandAndArgs.addAll(List.of(read().split(" ")));
       }
       switch (commandAndArgs.pop()) {
         case "palette":
@@ -98,13 +95,13 @@ public class SoloRedTextController implements RedGameController {
             if (commandAndArgs.size() == 1 && commandAndArgs.peek().equalsIgnoreCase("Q")) {
               throw new QuitException();
             }
-            commandAndArgs.addAll(Stream.of(read().split(" ")).filter((s) -> !s.contains("-")).collect(Collectors.toCollection(ArrayDeque::new)));
+            commandAndArgs.addAll(List.of(read().split(" ")));
           }
           playPalette(model, commandAndArgs);
           break;
         case "canvas":
           while (commandAndArgs.isEmpty()) {
-            commandAndArgs.addAll(Stream.of(read().split(" ")).filter((s) -> !s.contains("-")).collect(Collectors.toCollection(ArrayDeque::new)));
+            commandAndArgs.addAll(List.of(read().split(" ")));
           }
           playCanvas(model, commandAndArgs);
           break;
