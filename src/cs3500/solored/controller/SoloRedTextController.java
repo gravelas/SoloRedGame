@@ -54,7 +54,7 @@ public class SoloRedTextController implements RedGameController {
     }
     textView = new SoloRedGameTextView(model, appendable);
     render(textView);
-    append(appendable, "\nNumber of cards in deck: " + model.numOfCardsInDeck());
+    append(appendable, "\nNumber of cards in deck: " + model.numOfCardsInDeck() + "\n");
   }
 
   private void render(SoloRedGameTextView textView) {
@@ -112,7 +112,7 @@ public class SoloRedTextController implements RedGameController {
     append(appendable, "Game quit!\n");
     append(appendable, "State of game when quit:\n");
     render(textView);
-    append(appendable, "\nNumber of cards in deck: " + model.numOfCardsInDeck());
+    append(appendable, "\nNumber of cards in deck: " + model.numOfCardsInDeck() + "\n");
   }
 
   private <C extends Card> void playCanvas(RedGameModel<C> model, List<String> indices) {
