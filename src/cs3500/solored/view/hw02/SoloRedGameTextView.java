@@ -17,12 +17,16 @@ public class SoloRedGameTextView implements RedGameView {
   }
 
   public SoloRedGameTextView(RedGameModel<?> model, Appendable append) {
+    if (append == null) {
+      throw new IllegalArgumentException("Appendable was null");
+    }
     this.model = model;
     this.append = append;
   }
 
   /**
    * Returns a formatted string of the board view.
+   *
    * @return a string formatted to show the board state.
    */
   public String toString() {

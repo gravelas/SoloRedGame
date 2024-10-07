@@ -10,15 +10,19 @@ import cs3500.solored.model.hw02.Card;
 import cs3500.solored.model.hw02.RedGameModel;
 import cs3500.solored.view.hw02.SoloRedGameTextView;
 
-public class SoloRedTextController implements RedGameController{
+public class SoloRedTextController implements RedGameController {
 
   private Readable readable;
   private Appendable appendable;
   private SoloRedGameTextView textView;
 
-  public SoloRedTextController(Readable rd, Appendable ap) throws IllegalArgumentException {
-    if (rd == null) { throw new IllegalArgumentException("Readable is null"); }
-    if (ap == null) { throw new IllegalArgumentException("Appendable is null"); }
+  public SoloRedTextController(Readable rd, Appendable ap) {
+    if (rd == null) {
+      throw new IllegalArgumentException("Readable is null");
+    }
+    if (ap == null) {
+      throw new IllegalArgumentException("Appendable is null");
+    }
     readable = rd;
     appendable = ap;
   }
