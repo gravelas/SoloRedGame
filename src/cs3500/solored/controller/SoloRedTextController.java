@@ -1,9 +1,10 @@
 package cs3500.solored.controller;
 
 import java.io.IOException;
-import java.nio.CharBuffer;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -37,9 +38,9 @@ public class SoloRedTextController implements RedGameController {
       throw new IllegalArgumentException("RedGameModel is null");
     }
     model.startGame(deck, shuffle, numPalettes, handSize);
+    textView = new SoloRedGameTextView(model, appendable);
+    printState(model, appendable);
     while (!model.isGameOver()) {
-        textView = new SoloRedGameTextView(model, appendable);
-        printState(model, appendable);
         try {
           parseCommand(model, read(model));
         } catch (QuitException e) {
@@ -47,14 +48,13 @@ public class SoloRedTextController implements RedGameController {
           return;
       }
     }
+    printState(model, appendable);
     if (model.isGameWon()) {
       append(appendable, "Game won." + "\n");
     } else {
       append(appendable, "Game lost." + "\n");
     }
-    textView = new SoloRedGameTextView(model, appendable);
-    render(textView);
-    append(appendable, "\nNumber of cards in deck: " + model.numOfCardsInDeck() + "\n");
+    printState(model, appendable);
   }
 
   private void render(SoloRedGameTextView textView) {
@@ -80,31 +80,35 @@ public class SoloRedTextController implements RedGameController {
     } catch (NoSuchElementException e) {
       throw new IllegalStateException("Cannot read message", e);
     }
-    if (Arrays.stream(output.split(" ")).anyMatch(s -> s.equalsIgnoreCase("q"))) {
-      throw new QuitException();
-    }
     return output;
   }
 
   private <C extends Card> void parseCommand(RedGameModel<C> model, String input) {
-    List<String> commandAndArgs = new ArrayList<>(List.of(input.split(" ")));
-    switch (commandAndArgs.get(0)) {
-      case "palette":
-        while (commandAndArgs.size() < 3) {
-          commandAndArgs.addAll(List.of(read(model).split(" ")));
-        }
-        playPalette(model, commandAndArgs.subList(1, commandAndArgs.size()));
-        return;
-      case "canvas":
-        while (commandAndArgs.size() < 2) {
-          commandAndArgs.addAll(List.of(read(model).split(" ")));
-        }
-        playCanvas(model, commandAndArgs.subList(1, commandAndArgs.size()));
-        return;
-      default:
-        append(appendable, "Invalid Command. Try again. Enter palette, canvas, or q/Q.\n");
-        input = read(model);
-        parseCommand(model, input);
+    Deque<String> commandAndArgs = new ArrayDeque<>(List.of(input.split(" ")));
+    while (!commandAndArgs.isEmpty()) {
+      switch (commandAndArgs.pop()) {
+        case "palette":
+          while (commandAndArgs.size() < 2) {
+            commandAndArgs.addAll(List.of(read(model).split(" ")));
+          }
+          playPalette(model, commandAndArgs);
+          break;
+        case "canvas":
+          while (commandAndArgs.isEmpty()) {
+            commandAndArgs.addAll(List.of(read(model).split(" ")));
+          }
+          playCanvas(model, commandAndArgs);
+          break;
+        case "q":
+        case "Q":
+          throw new QuitException();
+        default:
+          append(appendable, "Invalid Command. Try again. Enter palette, canvas, or q/Q.\n");
+          input = read(model);
+          parseCommand(model, input);
+          break;
+      }
+      printState(model, appendable);
     }
   }
 
@@ -115,32 +119,45 @@ public class SoloRedTextController implements RedGameController {
     append(appendable, "\nNumber of cards in deck: " + model.numOfCardsInDeck() + "\n");
   }
 
-  private <C extends Card> void playCanvas(RedGameModel<C> model, List<String> indices) {
+  private <C extends Card> void playCanvas(RedGameModel<C> model, Deque<String> indices) {
+    String arg = indices.pop();
+    if (arg.equalsIgnoreCase("q")) {
+      throw new QuitException();
+    }
     try {
-      model.playToCanvas(Integer.parseInt(indices.get(0))-1);
+      model.playToCanvas(Integer.parseInt(arg)-1);
     } catch (IllegalArgumentException e) {
       append(appendable, "Invalid move. Try again. CardIndexInHand was OOB.\n");
-      printState(model, appendable);
-      parseCommand(model, read(model));
+      if (indices.isEmpty()) {
+        indices.addAll(List.of(read(model).split(" ")));
+      }
     } catch (IllegalStateException e) {
       append(appendable, "Invalid move. Try again. Only one card left in hand.\n");
-      printState(model, appendable);
-      parseCommand(model, read(model));
+      if (indices.isEmpty()) {
+        indices.addAll(List.of(read(model).split(" ")));
+      }
     }
   }
 
-  private <C extends Card> void playPalette(RedGameModel<C> model, List<String> indices) {
+  private <C extends Card> void playPalette(RedGameModel<C> model, Deque<String> indices) {
+    String firstArg = indices.pop();
+    String secondArg = indices.pop();
+    if (firstArg.equalsIgnoreCase("q") || secondArg.equalsIgnoreCase("q")) {
+      throw new QuitException();
+    }
     try {
-      model.playToPalette(Integer.parseInt(indices.get(0))-1, Integer.parseInt(indices.get(1))-1);
+      model.playToPalette(Integer.parseInt(firstArg)-1, Integer.parseInt(secondArg)-1);
     } catch (IllegalArgumentException e) {
       append(appendable, "Invalid move. Try again. CardIndexInHand was OOB.\n");
-      printState(model, appendable);
-      parseCommand(model, read(model));
+      if (indices.isEmpty()) {
+        indices.addAll(List.of(read(model).split(" ")));
+      }
       return;
     } catch (IllegalStateException e) {
       append(appendable, "Invalid move. Try again. Palette was already winning.\n");
-      printState(model, appendable);
-      parseCommand(model, read(model));
+      if (indices.isEmpty()) {
+        indices.addAll(List.of(read(model).split(" ")));
+      }
       return;
     }
     try {
