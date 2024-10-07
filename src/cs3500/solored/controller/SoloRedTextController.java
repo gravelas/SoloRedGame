@@ -2,12 +2,12 @@ package cs3500.solored.controller;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import cs3500.solored.model.hw02.Card;
 import cs3500.solored.model.hw02.RedGameModel;
@@ -37,24 +37,26 @@ public class SoloRedTextController implements RedGameController {
     if (model == null) {
       throw new IllegalArgumentException("RedGameModel is null");
     }
-    model.startGame(deck, shuffle, numPalettes, handSize);
+    try {
+      model.startGame(deck, shuffle, numPalettes, handSize);
+    } catch (IllegalStateException | IllegalArgumentException e) {
+      throw new IllegalArgumentException(e);
+    }
     textView = new SoloRedGameTextView(model, appendable);
     printState(model, appendable);
-    while (!model.isGameOver()) {
-        try {
-          parseCommand(model, read(model));
-        } catch (QuitException e) {
-          gameQuit(model);
-          return;
+    try {
+      parseCommand(model, read());
+    } catch (QuitException e) {
+      gameQuit(model);
+    } catch (EndException e) {
+      printState(model, appendable);
+      if (model.isGameWon()) {
+        append(appendable, "Game won." + "\n");
+      } else {
+        append(appendable, "Game lost." + "\n");
       }
+      printState(model, appendable);
     }
-    printState(model, appendable);
-    if (model.isGameWon()) {
-      append(appendable, "Game won." + "\n");
-    } else {
-      append(appendable, "Game lost." + "\n");
-    }
-    printState(model, appendable);
   }
 
   private void render(SoloRedGameTextView textView) {
@@ -73,29 +75,36 @@ public class SoloRedTextController implements RedGameController {
     }
   }
 
-  private <C extends Card> String read(RedGameModel<C> model) {
+  private String read() {
     String output = "";
     try {
       output = scan.nextLine();
     } catch (NoSuchElementException e) {
-      throw new IllegalStateException("Cannot read message", e);
+      throw new IllegalStateException();
     }
     return output;
   }
 
   private <C extends Card> void parseCommand(RedGameModel<C> model, String input) {
-    Deque<String> commandAndArgs = new ArrayDeque<>(List.of(input.split(" ")));
-    while (!commandAndArgs.isEmpty()) {
+    Deque<String> commandAndArgs = new ArrayDeque<>(Stream.of(read().split(" ")).filter((s) -> !s.contains("-")).collect(Collectors.toCollection(ArrayDeque::new)));
+
+    while (true) {
+      if (commandAndArgs.isEmpty()) {
+        commandAndArgs.addAll(Stream.of(read().split(" ")).filter((s) -> !s.contains("-")).collect(Collectors.toCollection(ArrayDeque::new)));
+      }
       switch (commandAndArgs.pop()) {
         case "palette":
           while (commandAndArgs.size() < 2) {
-            commandAndArgs.addAll(List.of(read(model).split(" ")));
+            if (commandAndArgs.size() == 1 && commandAndArgs.peek().equalsIgnoreCase("Q")) {
+              throw new QuitException();
+            }
+            commandAndArgs.addAll(Stream.of(read().split(" ")).filter((s) -> !s.contains("-")).collect(Collectors.toCollection(ArrayDeque::new)));
           }
           playPalette(model, commandAndArgs);
           break;
         case "canvas":
           while (commandAndArgs.isEmpty()) {
-            commandAndArgs.addAll(List.of(read(model).split(" ")));
+            commandAndArgs.addAll(Stream.of(read().split(" ")).filter((s) -> !s.contains("-")).collect(Collectors.toCollection(ArrayDeque::new)));
           }
           playCanvas(model, commandAndArgs);
           break;
@@ -104,8 +113,7 @@ public class SoloRedTextController implements RedGameController {
           throw new QuitException();
         default:
           append(appendable, "Invalid Command. Try again. Enter palette, canvas, or q/Q.\n");
-          input = read(model);
-          parseCommand(model, input);
+          printState(model, appendable);
           break;
       }
       printState(model, appendable);
@@ -128,14 +136,11 @@ public class SoloRedTextController implements RedGameController {
       model.playToCanvas(Integer.parseInt(arg)-1);
     } catch (IllegalArgumentException e) {
       append(appendable, "Invalid move. Try again. CardIndexInHand was OOB.\n");
-      if (indices.isEmpty()) {
-        indices.addAll(List.of(read(model).split(" ")));
-      }
     } catch (IllegalStateException e) {
       append(appendable, "Invalid move. Try again. Only one card left in hand.\n");
-      if (indices.isEmpty()) {
-        indices.addAll(List.of(read(model).split(" ")));
-      }
+    }
+    if (model.isGameOver()) {
+      throw new EndException();
     }
   }
 
@@ -149,16 +154,13 @@ public class SoloRedTextController implements RedGameController {
       model.playToPalette(Integer.parseInt(firstArg)-1, Integer.parseInt(secondArg)-1);
     } catch (IllegalArgumentException e) {
       append(appendable, "Invalid move. Try again. CardIndexInHand was OOB.\n");
-      if (indices.isEmpty()) {
-        indices.addAll(List.of(read(model).split(" ")));
-      }
       return;
     } catch (IllegalStateException e) {
       append(appendable, "Invalid move. Try again. Palette was already winning.\n");
-      if (indices.isEmpty()) {
-        indices.addAll(List.of(read(model).split(" ")));
-      }
       return;
+    }
+    if (model.isGameOver()) {
+      throw new EndException();
     }
     try {
       model.drawForHand();
@@ -174,5 +176,9 @@ public class SoloRedTextController implements RedGameController {
 }
 
 class QuitException extends RuntimeException {
+
+}
+
+class EndException extends RuntimeException {
 
 }
