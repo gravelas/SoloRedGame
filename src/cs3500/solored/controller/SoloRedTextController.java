@@ -6,16 +6,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cs3500.solored.model.hw02.Card;
 import cs3500.solored.model.hw02.RedGameModel;
-import cs3500.solored.model.hw02.SoloCard;
 import cs3500.solored.view.hw02.SoloRedGameTextView;
 
-public class SoloRedTextController implements RedGameController<SoloCard>{
+public class SoloRedTextController implements RedGameController<Card>{
 
   Readable readable;
   Appendable appendable;
   SoloRedGameTextView textView;
-  RedGameModel<SoloCard> model;
+  RedGameModel<Card> model;
 
   public SoloRedTextController(Readable rd, Appendable ap) throws IllegalArgumentException {
     if (rd == null) { throw new IllegalArgumentException("Readable is null"); }
@@ -25,7 +25,7 @@ public class SoloRedTextController implements RedGameController<SoloCard>{
   }
 
   @Override
-  public void playGame(RedGameModel<SoloCard> model, List<SoloCard> deck, boolean shuffle, int numPalettes, int handSize) throws IllegalArgumentException, IllegalStateException {
+  public void playGame(RedGameModel<Card> model, List<Card> deck, boolean shuffle, int numPalettes, int handSize) throws IllegalArgumentException, IllegalStateException {
     this.model = model;
     model.startGame(deck, shuffle, numPalettes, handSize);
     while (!model.isGameOver()) {
@@ -65,7 +65,7 @@ public class SoloRedTextController implements RedGameController<SoloCard>{
     return output;
   }
 
-  private void parseCommand(RedGameModel<SoloCard> model, String input) {
+  private void parseCommand(RedGameModel<Card> model, String input) {
     List<String> commandAndArgs = new ArrayList<>(List.of(input.split(" ")));
     switch (commandAndArgs.get(0)) {
       case "palette":
@@ -87,7 +87,7 @@ public class SoloRedTextController implements RedGameController<SoloCard>{
     }
   }
 
-  private void gameQuit(RedGameModel<SoloCard> model) {
+  private void gameQuit(RedGameModel<Card> model) {
     append(appendable, "Game quit!");
     append(appendable, "State of game when quit:");
     render(textView);
@@ -95,7 +95,7 @@ public class SoloRedTextController implements RedGameController<SoloCard>{
     System.exit(1);
   }
 
-  private void playCanvas(RedGameModel<SoloCard> model, List<String> indices) {
+  private void playCanvas(RedGameModel<Card> model, List<String> indices) {
     try {
       model.playToCanvas(Integer.parseInt(indices.get(0)));
     } catch (IllegalArgumentException e) {
@@ -107,7 +107,7 @@ public class SoloRedTextController implements RedGameController<SoloCard>{
     }
   }
 
-  private void playPalette(RedGameModel<SoloCard> model, List<String> indices) {
+  private void playPalette(RedGameModel<Card> model, List<String> indices) {
     try {
       model.playToPalette(Integer.parseInt(indices.get(0)), Integer.parseInt(indices.get(1)));
     } catch (IllegalArgumentException e) {
