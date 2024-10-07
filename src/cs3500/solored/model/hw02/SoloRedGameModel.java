@@ -248,8 +248,8 @@ public class SoloRedGameModel implements RedGameModel<SoloCard> {
 
   @Override
   public SoloCard getCanvas() {
-    if (!gameStart || gameOver) {
-      throw new IllegalStateException("Game has not started/is over.");
+    if (!gameStart) {
+      throw new IllegalStateException("Game has not started");
     }
     return CardBuilder.makeCard(canvas.toString());
   }

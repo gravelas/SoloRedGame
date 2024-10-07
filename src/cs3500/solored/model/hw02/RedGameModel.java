@@ -135,7 +135,7 @@ public interface RedGameModel<C extends Card> {
    * Return the top card of the canvas.
    * Modifying this card has no effect on the game.
    * @return the top card of the canvas
-   * @throws IllegalStateException if the game has not started or the game is over
+   * @throws IllegalStateException if the game has not started
    */
   C getCanvas();
 
