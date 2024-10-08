@@ -8,3 +8,9 @@
 
 4. Added some documentation to SoloRedGameModel, with the Lists to specify indices and
    for start game to specify null deck behavior.
+
+5. Rewrote CardBuilder to be a swtich statement for better readability.
+
+6. Added purpose statement to biggestOrRedCardWinner in SoloCard.
+
+7. Added purpose statements to shuffle and dealFromDeck in SoloRedGameModel.

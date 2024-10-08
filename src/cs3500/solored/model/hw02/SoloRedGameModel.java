@@ -42,6 +42,7 @@ public class SoloRedGameModel implements RedGameModel<SoloCard> {
 
   /**
    * initializes a SoloRedGameModel with a preset random seed.
+   *
    * @param random preset random object.
    * @throws IllegalArgumentException if the random object is null
    */
@@ -126,6 +127,11 @@ public class SoloRedGameModel implements RedGameModel<SoloCard> {
     drawCanvas = false;
   }
 
+  /**
+   * Gets the card off the top of the deck and removes it.
+   *
+   * @return The card on the top of the deck.
+   */
   private SoloCard dealFromDeck() {
     SoloCard dealt = deck.get(0);
     deck.remove(0);
@@ -134,10 +140,11 @@ public class SoloRedGameModel implements RedGameModel<SoloCard> {
 
   /**
    * For my implementation if the deck is null an IllegalArgumentException is thrown.
-   * @param deck the cards used to set up and play the game
-   * @param shuffle whether the deck should be shuffled prior to setting up the game
+   *
+   * @param deck        the cards used to set up and play the game
+   * @param shuffle     whether the deck should be shuffled prior to setting up the game
    * @param numPalettes number of palettes in the game
-   * @param handSize the maximum number of cards allowed in the hand
+   * @param handSize    the maximum number of cards allowed in the hand
    */
   @Override
   public void startGame(List<SoloCard> deck, boolean shuffle, int numPalettes, int handSize) {
@@ -178,6 +185,12 @@ public class SoloRedGameModel implements RedGameModel<SoloCard> {
     drawForHand();
   }
 
+  /**
+   * Creates deep copies of all cards and randomly shuffles them into a new deck.
+   *
+   * @param deck previous deck
+   * @return shuffled version of previous deck.
+   */
   private List<SoloCard> shuffle(List<SoloCard> deck) {
     List<SoloCard> shuffled = new ArrayList<>();
     while (!deck.isEmpty()) {

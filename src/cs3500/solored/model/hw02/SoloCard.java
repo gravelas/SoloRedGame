@@ -15,13 +15,15 @@ public abstract class SoloCard implements Card {
 
   /**
    * Creates a Card. Number must be between 1-7 (inclusive).
+   *
    * @param num number assigned
    * @throws IllegalArgumentException number isn't between 1-7
    */
   public SoloCard(Color color, int num) {
     if (num < 1 || num > 7) {
       throw new IllegalArgumentException("Num must be between 1 and 7");
-    } if (color == null) {
+    }
+    if (color == null) {
       throw new IllegalArgumentException("Color cannot be null");
     }
     this.num = num;
@@ -43,8 +45,15 @@ public abstract class SoloCard implements Card {
     return color.toString() + num;
   }
 
+  /**
+   * Finds ties and breaks them with red rule
+   *
+   * @param palettes               palettes to sort through.
+   * @param paletteBestNumberCount map of palettes to their score values from rules
+   * @return
+   */
   protected List<SoloCard> biggestOrRedCardWinner(
-      List<List<SoloCard>> palettes, Map<List<SoloCard>, Integer> paletteBestNumberCount) {
+          List<List<SoloCard>> palettes, Map<List<SoloCard>, Integer> paletteBestNumberCount) {
     List<SoloCard> bestPalette = palettes.get(0);
     int bestPaletteNumberCount = paletteBestNumberCount.get(palettes.get(0));
     boolean biggestIsTie = false;
