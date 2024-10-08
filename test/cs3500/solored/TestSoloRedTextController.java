@@ -24,7 +24,7 @@ public class TestSoloRedTextController {
 
     RedGameModel<SoloCard> model = new SoloRedGameModel();
 
-    controller.playGame(model, model.getAllCards(), false, 4, 4);
+    controller.playGame(model, model.getAllCards().subList(0,10), false, 4, 4);
   }
 
   @Test

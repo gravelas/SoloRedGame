@@ -3,10 +3,12 @@ package cs3500.solored.controller;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import cs3500.solored.model.hw02.Card;
 import cs3500.solored.model.hw02.RedGameModel;
@@ -42,6 +44,15 @@ public class SoloRedTextController implements RedGameController {
       throw new IllegalArgumentException(e);
     }
     textView = new SoloRedGameTextView(model, appendable);
+    if (model.isGameOver()) {
+      if (model.isGameWon()) {
+        append(appendable, "Game won." + "\n");
+      } else if (!model.isGameWon()) {
+        append(appendable, "Game lost." + "\n");
+      }
+      printState(model, appendable);
+      return;
+    }
     printState(model, appendable);
     try {
       parseCommand(model, read());
@@ -85,25 +96,32 @@ public class SoloRedTextController implements RedGameController {
   }
 
   private <C extends Card> void parseCommand(RedGameModel<C> model, String input) {
-    Deque<String> commandAndArgs = new ArrayDeque<>(List.of(input.split(" ")));
+    Deque<String> commandAndArgs = new ArrayDeque<>(inputFilterInts(input));
     while (true) {
       if (commandAndArgs.isEmpty()) {
-        commandAndArgs.addAll(List.of(read().split(" ")));
+        commandAndArgs.addAll(inputFilterInts(read()));
+      }
+      if (model.isGameOver()) {
+        throw new EndException();
       }
       switch (commandAndArgs.pop()) {
         case "palette":
+          commandAndArgs = new ArrayDeque<>(inputFilterStrings(new ArrayList<>(commandAndArgs)));
           while (commandAndArgs.size() < 2) {
             if (commandAndArgs.size() == 1 && commandAndArgs.peek().equalsIgnoreCase("Q")) {
               throw new QuitException();
             }
-            commandAndArgs.addAll(List.of(read().split(" ")));
+            commandAndArgs.addAll(inputFilterInts(read()));
+            commandAndArgs = new ArrayDeque<>(inputFilterStrings(new ArrayList<>(commandAndArgs)));
           }
           playPalette(model, commandAndArgs);
           break;
         case "canvas":
+          commandAndArgs = new ArrayDeque<>(inputFilterStrings(new ArrayList<>(commandAndArgs)));
           while (commandAndArgs.isEmpty()) {
-            commandAndArgs.addAll(List.of(read().split(" ")));
+            commandAndArgs.addAll(inputFilterInts(read()));
           }
+          commandAndArgs = new ArrayDeque<>(inputFilterStrings(new ArrayList<>(commandAndArgs)));
           playCanvas(model, commandAndArgs);
           break;
         case "q":
@@ -111,7 +129,6 @@ public class SoloRedTextController implements RedGameController {
           throw new QuitException();
         default:
           append(appendable, "Invalid Command. Try again. Enter palette, canvas, or q/Q.\n");
-          printState(model, appendable);
           break;
       }
       printState(model, appendable);
@@ -172,18 +189,55 @@ public class SoloRedTextController implements RedGameController {
     append(appendable, "\nNumber of cards in deck: " + model.numOfCardsInDeck() + "\n");
   }
 
-  private List<String> inputWithChecks(String input) {
-    List<String> result = new ArrayList<>(List.of(input.split(" ")));
-    for (String s : result) {
+  private List<String> inputFilterInts(String input) {
+    List<String> result = Arrays.stream(input.split(" ")).collect(Collectors.toList());
+    for (int index = 0; index < result.size(); index++) {
+      Integer num;
       try {
-        if (Integer.parseInt(s) < 0) {
-          result.remove(s);
-        }
+        num = Integer.parseInt(result.get(index));
       } catch (NumberFormatException e) {
-
+        num = null;
+      }
+      if (num != null && num < 0) {
+        result.remove(index);
+        index--;
       }
     }
     return result;
+  }
+
+  private List<String> inputFilterStrings(List<String> input) {
+    boolean twoNum = false;
+    for (int index = 0; index < input.size() && !twoNum; index++) {
+      Integer num;
+      try {
+        num = Integer.parseInt(input.get(index));
+      } catch (NumberFormatException e) {
+        num = null;
+      }
+      if (num == null && !input.get(index).equalsIgnoreCase("q")) {
+        input.remove(index);
+        index--;
+      }
+      Integer first;
+      Integer second;
+      if (index < input.size()-1 && index > -1) {
+        try {
+          first = Integer.parseInt(input.get(index));
+        } catch (NumberFormatException e) {
+          first = null;
+        }
+        try {
+          second = Integer.parseInt(input.get(index + 1));
+        } catch (NumberFormatException e) {
+          second = null;
+        }
+        if (first != null && second != null) {
+          twoNum = true;
+        }
+      }
+    }
+    return input;
   }
 }
 
