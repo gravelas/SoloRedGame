@@ -2,6 +2,7 @@ package cs3500.solored.controller;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -169,6 +170,20 @@ public class SoloRedTextController implements RedGameController {
   private <C extends Card> void printState(RedGameModel<C> model, Appendable appendable) {
     render(textView);
     append(appendable, "\nNumber of cards in deck: " + model.numOfCardsInDeck() + "\n");
+  }
+
+  private List<String> inputWithChecks(String input) {
+    List<String> result = new ArrayList<>(List.of(input.split(" ")));
+    for (String s : result) {
+      try {
+        if (Integer.parseInt(s) < 0) {
+          result.remove(s);
+        }
+      } catch (NumberFormatException e) {
+
+      }
+    }
+    return result;
   }
 }
 
