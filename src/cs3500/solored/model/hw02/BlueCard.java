@@ -16,8 +16,7 @@ public class BlueCard extends SoloCard {
    * @param num number of card
    */
   public BlueCard(int num) {
-    super(num);
-    this.color = Color.BLUE;
+    super(Color.BLUE, num);
   }
 
   /**

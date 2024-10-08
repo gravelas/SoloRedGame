@@ -10,16 +10,19 @@ import java.util.Random;
  */
 public class SoloRedGameModel implements RedGameModel<SoloCard> {
 
-  List<SoloCard> deck;
-  List<List<SoloCard>> palettes;
-  List<SoloCard> hand;
-  SoloCard canvas;
-  int handSize;
-  Random rand;
-  boolean gameOver;
-  boolean gameStart;
-  boolean drawCanvas;
-  boolean lost;
+  //Top card is represented as 0 index, bottom card is last index.
+  private List<SoloCard> deck;
+  // 0 through palettes size minus one. Top to bottom when displayed.
+  private final List<List<SoloCard>> palettes;
+  // 0 through handSize minus one. Left to right.
+  private final List<SoloCard> hand;
+  private SoloCard canvas;
+  private int handSize;
+  private final Random rand;
+  private boolean gameOver;
+  private boolean gameStart;
+  private boolean drawCanvas;
+  private boolean lost;
 
   /**
    * initializes a SoloRedGameModel with values that allow startGame to be called.
@@ -129,6 +132,13 @@ public class SoloRedGameModel implements RedGameModel<SoloCard> {
     return dealt;
   }
 
+  /**
+   * For my implementation if the deck is null an IllegalArgumentException is thrown.
+   * @param deck the cards used to set up and play the game
+   * @param shuffle whether the deck should be shuffled prior to setting up the game
+   * @param numPalettes number of palettes in the game
+   * @param handSize the maximum number of cards allowed in the hand
+   */
   @Override
   public void startGame(List<SoloCard> deck, boolean shuffle, int numPalettes, int handSize) {
     if (deck == null) {

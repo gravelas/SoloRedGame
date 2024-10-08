@@ -14,8 +14,7 @@ public class VioletCard extends SoloCard {
    * @param num number of card
    */
   public VioletCard(int num) {
-    super(num);
-    this.color = Color.VIOLET;
+    super(Color.VIOLET, num);
   }
 
   @Override

@@ -14,8 +14,7 @@ public class OrangeCard extends SoloCard {
    * @param num number of card
    */
   public OrangeCard(int num) {
-    super(num);
-    this.color = Color.ORANGE;
+    super(Color.ORANGE, num);
   }
 
   /**

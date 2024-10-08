@@ -10,19 +10,22 @@ import java.util.Map;
  */
 public abstract class SoloCard implements Card {
 
-  protected Color color;
-  protected int num;
+  protected final Color color;
+  protected final int num;
 
   /**
    * Creates a Card. Number must be between 1-7 (inclusive).
    * @param num number assigned
    * @throws IllegalArgumentException number isn't between 1-7
    */
-  public SoloCard(int num) {
+  public SoloCard(Color color, int num) {
     if (num < 1 || num > 7) {
       throw new IllegalArgumentException("Num must be between 1 and 7");
+    } if (color == null) {
+      throw new IllegalArgumentException("Color cannot be null");
     }
     this.num = num;
+    this.color = color;
   }
 
   public int number() {

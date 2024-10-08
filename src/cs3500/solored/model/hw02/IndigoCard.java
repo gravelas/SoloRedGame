@@ -17,8 +17,7 @@ public class IndigoCard extends SoloCard {
    * @param num number of card
    */
   public IndigoCard(int num) {
-    super(num);
-    this.color = Color.INDIGO;
+    super(Color.INDIGO, num);
   }
 
   /**
