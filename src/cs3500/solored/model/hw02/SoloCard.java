@@ -46,7 +46,7 @@ public abstract class SoloCard implements Card {
   }
 
   /**
-   * Finds ties and breaks them with red rule
+   * Finds ties and breaks them with red rule.
    *
    * @param palettes               palettes to sort through.
    * @param paletteBestNumberCount map of palettes to their score values from rules
