@@ -24,7 +24,8 @@ public interface RedGameController {
    * @param <C>         The card implementation that extends the card interface.
    * @throws IllegalArgumentException If something is wrong with the model,
    *                                  either its null or startGame doesn't work.
-   * @throws IllegalStateException    If something is wrong with either the readable or the appendable.
+   * @throws IllegalStateException    If something is wrong with either
+   *                                  the readable or the appendable.
    */
   public <C extends Card> void playGame(
           RedGameModel<C> model,

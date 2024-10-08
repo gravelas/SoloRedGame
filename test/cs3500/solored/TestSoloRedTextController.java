@@ -72,7 +72,8 @@ public class TestSoloRedTextController {
 
   @Test
   public void testPlayGameWithNormalWinDoesNotQuit() throws IOException {
-    Readable rd = new StringReader("palette 1 1 palette 2 1 palette 3 1 canvas 1 palette 4 2 palette 3 1 q");
+    Readable rd = new StringReader("palette 1 1 palette 2 1 palette 3 1 " +
+            "canvas 1 palette 4 2 palette 3 1 q");
     Appendable ap = new StringBuilder();
     ap.append("Canvas: R\n" +
             "P1: V1\n" +
