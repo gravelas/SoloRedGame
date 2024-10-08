@@ -2,6 +2,9 @@ package cs3500.solored;
 
 import java.io.IOException;
 
+/**
+ * Mock of appendable that always throws IOExceptions for tests.
+ */
 public class ThrowingAppendableMock implements Appendable {
   @Override
   public Appendable append(CharSequence csq) throws IOException {
