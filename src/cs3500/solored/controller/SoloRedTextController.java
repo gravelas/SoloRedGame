@@ -101,7 +101,7 @@ public class SoloRedTextController implements RedGameController {
    *
    * @param appendable Where to append to.
    * @param msg        What to append to the appendable.
-   * @throws IllegalStateException
+   * @throws IllegalStateException when the append fails.
    */
   private void append(Appendable appendable, String msg) throws IllegalStateException {
     try {
@@ -137,7 +137,9 @@ public class SoloRedTextController implements RedGameController {
    * @throws QuitException if the program detects a Q input.
    * @throws EndException  if the program detecs a game over.
    */
-  private <C extends Card> void parseCommand(RedGameModel<C> model, String input) throws QuitException, EndException {
+  private <C extends Card> void parseCommand(
+          RedGameModel<C> model, String input
+  ) throws QuitException, EndException {
     Deque<String> commandAndArgs = new ArrayDeque<>(inputFilterInts(input));
     while (true) {
       if (commandAndArgs.isEmpty()) {
@@ -206,7 +208,9 @@ public class SoloRedTextController implements RedGameController {
    * @param <C>     card implementation used.
    * @throws QuitException if next arg is q, then quit.
    */
-  private <C extends Card> void playCanvas(RedGameModel<C> model, Deque<String> indices) throws QuitException {
+  private <C extends Card> void playCanvas(
+          RedGameModel<C> model, Deque<String> indices
+  ) throws QuitException {
     String arg = indices.pop();
     if (arg.equalsIgnoreCase("q")) {
       throw new QuitException();
@@ -231,7 +235,9 @@ public class SoloRedTextController implements RedGameController {
    * @param <C>     card implementation used.
    * @throws QuitException if next arg is q, then quit.
    */
-  private <C extends Card> void playPalette(RedGameModel<C> model, Deque<String> indices) throws QuitException {
+  private <C extends Card> void playPalette(
+          RedGameModel<C> model, Deque<String> indices
+  ) throws QuitException {
     String firstArg = indices.pop();
     String secondArg = indices.pop();
     if (firstArg.equalsIgnoreCase("q") || secondArg.equalsIgnoreCase("q")) {

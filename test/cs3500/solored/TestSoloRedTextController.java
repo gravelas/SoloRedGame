@@ -14,13 +14,13 @@ import cs3500.solored.model.hw02.SoloCard;
 import cs3500.solored.model.hw02.SoloRedGameModel;
 
 /**
- * Tests for the SoloRedTextController
+ * Tests for the SoloRedTextController.
  */
 public class TestSoloRedTextController {
 
   /**
    * Main method that allows the user to run the controller in console.
-   * @param args
+   * @param args main method arguments.
    */
   public static void main(String[] args) {
     Readable rd = new InputStreamReader(System.in);
