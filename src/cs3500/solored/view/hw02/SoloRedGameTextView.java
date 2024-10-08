@@ -12,10 +12,21 @@ public class SoloRedGameTextView implements RedGameView {
   private final RedGameModel<?> model;
   private Appendable append;
 
+  /**
+   * Constructor for SoloRedGameTextView that just takes in a model and sets it.
+   *
+   * @param model that the toString uses to get information.
+   */
   public SoloRedGameTextView(RedGameModel<?> model) {
     this.model = model;
   }
 
+  /**
+   * Constructor for SoloRedGameTextView that takes both a model and appendable to append to.
+   *
+   * @param model  that the toString uses to get information.
+   * @param append where to append output from render().
+   */
   public SoloRedGameTextView(RedGameModel<?> model, Appendable append) {
     if (append == null) {
       throw new IllegalArgumentException("Appendable was null");
@@ -29,6 +40,7 @@ public class SoloRedGameTextView implements RedGameView {
    *
    * @return a string formatted to show the board state.
    */
+  @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("Canvas: ").append(model.getCanvas().toString().charAt(0)).append("\n");
