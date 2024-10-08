@@ -3,10 +3,8 @@ package cs3500.solored;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.StringReader;
 
 import cs3500.solored.controller.RedGameController;
@@ -134,5 +132,10 @@ public class TestSoloRedTextController {
     controller.playGame(model, model.getAllCards().subList(0,10), false, 4, 4);
 
     Assert.assertEquals(ap2.toString(), ap.toString());
+  }
+
+  @Test
+  public void testInvalidCommandWithSomeValid() throws IOException {
+
   }
 }

@@ -128,7 +128,7 @@ public class SoloRedTextController implements RedGameController {
         case "Q":
           throw new QuitException();
         default:
-          append(appendable, "Invalid Command. Try again. Enter palette, canvas, or q/Q.\n");
+          append(appendable, "Invalid command. Try again. Enter palette, canvas, or q/Q.\n");
           break;
       }
       printState(model, appendable);
