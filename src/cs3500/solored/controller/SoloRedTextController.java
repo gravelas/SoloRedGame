@@ -56,8 +56,6 @@ public class SoloRedTextController implements RedGameController {
     printState(model, appendable);
     try {
       parseCommand(model, read());
-    } catch (QuitException e) {
-      gameQuit(model);
     } catch (EndException e) {
       printState(model, appendable);
       if (model.isGameWon()) {
@@ -66,6 +64,8 @@ public class SoloRedTextController implements RedGameController {
         append(appendable, "Game lost." + "\n");
       }
       printState(model, appendable);
+    } catch (QuitException e) {
+      gameQuit(model);
     }
   }
 
@@ -106,22 +106,22 @@ public class SoloRedTextController implements RedGameController {
       }
       switch (commandAndArgs.pop()) {
         case "palette":
-          commandAndArgs = new ArrayDeque<>(inputFilterStrings(new ArrayList<>(commandAndArgs)));
+          commandAndArgs = new ArrayDeque<>(paletteInputFilterStrings(new ArrayList<>(commandAndArgs)));
           while (commandAndArgs.size() < 2) {
             if (commandAndArgs.size() == 1 && commandAndArgs.peek().equalsIgnoreCase("Q")) {
               throw new QuitException();
             }
             commandAndArgs.addAll(inputFilterInts(read()));
-            commandAndArgs = new ArrayDeque<>(inputFilterStrings(new ArrayList<>(commandAndArgs)));
+            commandAndArgs = new ArrayDeque<>(paletteInputFilterStrings(new ArrayList<>(commandAndArgs)));
           }
           playPalette(model, commandAndArgs);
           break;
         case "canvas":
-          commandAndArgs = new ArrayDeque<>(inputFilterStrings(new ArrayList<>(commandAndArgs)));
+          commandAndArgs = new ArrayDeque<>(canvasInputFilterStrings(new ArrayList<>(commandAndArgs)));
           while (commandAndArgs.isEmpty()) {
             commandAndArgs.addAll(inputFilterInts(read()));
           }
-          commandAndArgs = new ArrayDeque<>(inputFilterStrings(new ArrayList<>(commandAndArgs)));
+          commandAndArgs = new ArrayDeque<>(canvasInputFilterStrings(new ArrayList<>(commandAndArgs)));
           playCanvas(model, commandAndArgs);
           break;
         case "q":
@@ -206,7 +206,7 @@ public class SoloRedTextController implements RedGameController {
     return result;
   }
 
-  private List<String> inputFilterStrings(List<String> input) {
+  private List<String> paletteInputFilterStrings(List<String> input) {
     boolean twoNum = false;
     for (int index = 0; index < input.size() && !twoNum; index++) {
       Integer num;
@@ -234,6 +234,34 @@ public class SoloRedTextController implements RedGameController {
         }
         if (first != null && second != null) {
           twoNum = true;
+        }
+      }
+    }
+    return input;
+  }
+
+  private List<String> canvasInputFilterStrings(List<String> input) {
+    boolean oneNum = false;
+    for (int index = 0; index < input.size() && !oneNum; index++) {
+      Integer num;
+      try {
+        num = Integer.parseInt(input.get(index));
+      } catch (NumberFormatException e) {
+        num = null;
+      }
+      if (num == null && !input.get(index).equalsIgnoreCase("q")) {
+        input.remove(index);
+        index--;
+      }
+      Integer first;
+      if (index > -1) {
+        try {
+          first = Integer.parseInt(input.get(index));
+        } catch (NumberFormatException e) {
+          first = null;
+        }
+        if (first != null) {
+          oneNum = true;
         }
       }
     }
