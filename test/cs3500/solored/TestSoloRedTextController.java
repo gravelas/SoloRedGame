@@ -312,6 +312,4 @@ public class TestSoloRedTextController {
 
     Assert.assertEquals(ap2.toString(), ap.toString());
   }
-
-
 }
