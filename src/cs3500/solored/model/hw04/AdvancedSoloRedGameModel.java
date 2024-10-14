@@ -1,29 +1,21 @@
-package cs3500.solored.model.hw02;
+package cs3500.solored.model.hw04;
 
 import java.util.Random;
 
-import cs3500.solored.model.hw04.AbstractModel;
+import cs3500.solored.model.hw02.SoloCard;
 
-/**
- * Implementation of the SoloRedGame.
- */
-public class SoloRedGameModel extends AbstractModel {
+public class AdvancedSoloRedGameModel extends AbstractModel {
 
-  /**
-   * initializes a SoloRedGameModel with values that allow startGame to be called.
-   */
-  public SoloRedGameModel() {
+  private boolean drawTwo;
+
+  public AdvancedSoloRedGameModel() {
     super();
+    drawTwo = false;
   }
 
-  /**
-   * initializes a SoloRedGameModel with a preset random seed.
-   *
-   * @param random preset random object.
-   * @throws IllegalArgumentException if the random object is null
-   */
-  public SoloRedGameModel(Random random) {
+  public AdvancedSoloRedGameModel(Random random) {
     super(random);
+    drawTwo = false;
   }
 
   @Override
@@ -31,14 +23,14 @@ public class SoloRedGameModel extends AbstractModel {
     if (gameOver || !gameStart) {
       throw new IllegalStateException("Game is over/hasn't started.");
     }
-    while (hand.size() < handSize) {
-      if (numOfCardsInDeck() > 0) {
+    if (numOfCardsInDeck() > 0 && hand.size() < handSize) {
+      hand.add(dealFromDeck());
+      if (drawTwo && numOfCardsInDeck() > 0 && hand.size() < handSize) {
         hand.add(dealFromDeck());
-      } else {
-        break;
       }
     }
     drawCanvas = false;
+    drawTwo = false;
   }
 
   @Override
@@ -56,8 +48,13 @@ public class SoloRedGameModel extends AbstractModel {
     if (hand.size() == 1) {
       throw new IllegalStateException("Only 1 card left in hand");
     }
-    canvas = hand.get(cardIdxInHand);
+    SoloCard newCanvas = hand.get(cardIdxInHand);
+    if (newCanvas.number() > canvas.number()) {
+      drawTwo = true;
+    }
+    canvas = newCanvas;
     hand.remove(cardIdxInHand);
     drawCanvas = true;
   }
 }
+
