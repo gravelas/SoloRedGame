@@ -49,7 +49,7 @@ public class AdvancedSoloRedGameModel extends AbstractModel {
       throw new IllegalStateException("Only 1 card left in hand");
     }
     SoloCard newCanvas = hand.get(cardIdxInHand);
-    if (newCanvas.number() > canvas.number()) {
+    if (newCanvas.number() > palettes.get(winningPaletteIndex()).size()) {
       drawTwo = true;
     }
     canvas = newCanvas;

@@ -17,6 +17,11 @@ public class VioletCard extends SoloCard {
     super(Color.VIOLET, num);
   }
 
+  /**
+   * Finds the palette with the most amount of cards with a number less than 4.
+   * @param palettes the palettes to look through.
+   * @return the palette that wins.
+   */
   @Override
   public List<SoloCard> canvasRule(List<List<SoloCard>> palettes) {
     if (palettes == null) {

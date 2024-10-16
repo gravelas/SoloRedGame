@@ -20,7 +20,7 @@ public class BlueCard extends SoloCard {
   }
 
   /**
-   * Finds the palette with the most amount of same colors.
+   * Finds most amount of unique colors in palette.
    * @param palettes the palettes it searches through
    * @return the palette with the most amount of same colors.
    */

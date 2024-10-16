@@ -38,7 +38,9 @@ public class SoloRed {
         handSize = parseHandInt(arguments.pop());
       }
     }
-    controller.playGame(model, model.getAllCards(), true, palettesSize, handSize);
+    try {
+      controller.playGame(model, model.getAllCards(), true, palettesSize, handSize);
+    } catch (IllegalStateException ignored) {}
 
   }
 
