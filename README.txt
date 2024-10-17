@@ -1,3 +1,5 @@
+HW03
+
 1. Changed the field "int num" and "Color color" in SoloCard.java to be final so that the card class is immutable.
    a. Changing Color color to be final involved a restructuring of how color is assigned,
       instead of being in the subclass, it is now done in the parent class through the super call.
@@ -14,3 +16,8 @@
 6. Added purpose statement to biggestOrRedCardWinner in SoloCard.
 
 7. Added purpose statements to shuffle and dealFromDeck in SoloRedGameModel.
+
+
+HW04
+
+1. In SoloRedGameModel, I changed how drawing works in the beginning, as my drawForHand() method changed from draw till full to draw once/twice.

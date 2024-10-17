@@ -30,10 +30,18 @@ public abstract class SoloCard implements Card {
     this.color = color;
   }
 
+  /**
+   * returns the number associated with the card.
+   * @return number of card.
+   */
   public int number() {
     return num;
   }
 
+  /**
+   * Returns the color associated with the card.
+   * @return color of card.
+   */
   public Color color() {
     return color;
   }
@@ -50,7 +58,7 @@ public abstract class SoloCard implements Card {
    *
    * @param palettes               palettes to sort through.
    * @param paletteBestNumberCount map of palettes to their score values from rules
-   * @return
+   * @return bestPalette (palette that wins)
    */
   protected List<SoloCard> biggestOrRedCardWinner(
           List<List<SoloCard>> palettes, Map<List<SoloCard>, Integer> paletteBestNumberCount) {

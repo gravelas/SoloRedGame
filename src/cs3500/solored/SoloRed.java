@@ -22,6 +22,7 @@ public class SoloRed {
 
   /**
    * Main class that runs the program in the console window.
+   *
    * @param args type of game, palettesSize, handSize
    */
   public static void main(String[] args) {
@@ -30,7 +31,9 @@ public class SoloRed {
     }
 
     Deque<String> arguments = new ArrayDeque<>(List.of(args));
-    RedGameController controller = new SoloRedTextController(new InputStreamReader(System.in), System.out);
+    RedGameController controller = new SoloRedTextController(
+            new InputStreamReader(System.in), System.out
+    );
     RedGameModel<SoloCard> model;
 
     RedGameCreator.GameType type = RedGameCreator.GameType.parseType(arguments.pop());
@@ -59,6 +62,7 @@ public class SoloRed {
   /**
    * Takes a string input and checks if an integer or less than one.
    * If not in bounds it sets the return to the defaultPalettesSize.
+   *
    * @param input string input to parse.
    * @return int of either the input or defaultPaletteSize
    */
@@ -78,6 +82,7 @@ public class SoloRed {
   /**
    * Takes a string input and checks if an integer or less than one.
    * If not in bounds it sets the return to the defaultHandSize.
+   *
    * @param input string input to parse.
    * @return int of either the input or defaultHandSize
    */

@@ -5,7 +5,8 @@ import cs3500.solored.model.hw02.SoloCard;
 import cs3500.solored.model.hw02.SoloRedGameModel;
 
 /**
- * Factory class that can parse GameTypes as well as create different types of models based on inputs.
+ * Factory class that can parse GameTypes as well as
+ * create different types of models based on inputs.
  */
 public class RedGameCreator {
 
@@ -17,6 +18,7 @@ public class RedGameCreator {
 
     /**
      * Similar to the parseInt function. Takes a string of a gameType and returns the enum.
+     *
      * @param gameType string input
      * @return game type correlated to string input
      */
@@ -34,6 +36,7 @@ public class RedGameCreator {
 
   /**
    * Returns a version of model based off of the input type.
+   *
    * @param type the type that decides which model to return
    * @return the model returned
    */

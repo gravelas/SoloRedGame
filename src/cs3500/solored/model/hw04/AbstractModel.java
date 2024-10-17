@@ -10,6 +10,9 @@ import cs3500.solored.model.hw02.Color;
 import cs3500.solored.model.hw02.RedGameModel;
 import cs3500.solored.model.hw02.SoloCard;
 
+/**
+ * Abstracted Model that handles most of the functionality of a SoloRed Game.
+ */
 public abstract class AbstractModel implements RedGameModel<SoloCard> {
   // 0 through palettes size minus one. Top to bottom when displayed.
   protected final List<List<SoloCard>> palettes;
@@ -25,6 +28,9 @@ public abstract class AbstractModel implements RedGameModel<SoloCard> {
   protected boolean drawCanvas;
   protected boolean lost;
 
+  /**
+   * Initializes all values needed to run a game.
+   */
   public AbstractModel() {
     deck = new ArrayList<>();
     palettes = new ArrayList<>();
@@ -38,6 +44,11 @@ public abstract class AbstractModel implements RedGameModel<SoloCard> {
     rand = new Random();
   }
 
+  /**
+   * Initializes all values needed to run a game.
+   * Also takes in a specified random seed for shuffling.
+   * @param random Random object to control shuffling.
+   */
   public AbstractModel(Random random) {
     deck = new ArrayList<>();
     palettes = new ArrayList<>();

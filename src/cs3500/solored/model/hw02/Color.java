@@ -8,6 +8,6 @@ public enum Color {
 
   @Override
   public String toString() {
-    return name().substring(0,1).toUpperCase();
+    return name().substring(0, 1).toUpperCase();
   }
 }

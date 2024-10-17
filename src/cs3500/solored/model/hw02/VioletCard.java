@@ -11,6 +11,7 @@ public class VioletCard extends SoloCard {
 
   /**
    * Creates a VioletCard. Num must be between 1-7 (inclusive).
+   *
    * @param num number of card
    */
   public VioletCard(int num) {
@@ -19,6 +20,7 @@ public class VioletCard extends SoloCard {
 
   /**
    * Finds the palette with the most amount of cards with a number less than 4.
+   *
    * @param palettes the palettes to look through.
    * @return the palette that wins.
    */
