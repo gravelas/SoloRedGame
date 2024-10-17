@@ -13,8 +13,8 @@ import cs3500.solored.model.hw04.RedGameCreator;
 
 public class SoloRed {
 
-  private final static int defaultHandSize = 7;
-  private final static int defaultPalettesSize = 4;
+  private static final int defaultHandSize = 7;
+  private static final int defaultPalettesSize = 4;
 
   public static void main(String[] args) {
     if (args.length == 0) {
@@ -40,7 +40,11 @@ public class SoloRed {
     }
     try {
       controller.playGame(model, model.getAllCards(), true, palettesSize, handSize);
-    } catch (IllegalStateException ignored) {}
+    } catch (IllegalStateException ignored) {
+      //quit
+    } catch (IllegalArgumentException e) {
+      controller.playGame(model, model.getAllCards(), true, defaultPalettesSize, defaultHandSize);
+    }
 
   }
 
